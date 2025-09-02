@@ -6,7 +6,7 @@ Here is the relevant line from the original C code:
 ```c
 double average(const int *arr, size_t n) {
     if (n == 0) return 0.0;
-    return (double)sum_array(arr, n) / (double)n; the line we will optimize
+    return (double)sum_array(arr, n) / (double)n;// the line we will optimize
 }
 ```
 
