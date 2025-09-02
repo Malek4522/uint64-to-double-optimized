@@ -1,10 +1,13 @@
-# Optimized `average()` Function for int Arrays
+# Optimized uint64-to-double
 
 ## Source Instruction
 Here is the relevant line from the original C code:
 
 ```c
-return (double)sum_array(arr, n) / (double)n;
+double average(const int *arr, size_t n) {
+    if (n == 0) return 0.0;
+    return (double)sum_array(arr, n) / (double)n; the line we will optimize
+}
 ```
 
 ---
