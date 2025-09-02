@@ -16,14 +16,22 @@ double average(const int *arr, size_t n) {
 For very large arrays, compilers generate code to safely convert the `long` sum to a `double`:
 
 ```asm
-call    sum_array      ; sum_array returns in rax (long)
-pxor    xmm0, xmm0     ; zero xmm0
-test    rsi, rsi       ; check if n == 0
-cvtsi2sdq xmm0, rax    ; convert long sum to double
-js      .L24           ; jump if negative (rare case for signed)
-pxor    xmm1, xmm1     ; zero xmm1
-cvtsi2sdq xmm1, rsi    ; convert size_t n to double
-divsd   xmm0, xmm1     ; compute average
+call sum_array ; sum_array returns in rax (long)
+pxor xmm0, xmm0 ; zero xmm0
+test rsi, rsi ; check if n == 0
+cvtsi2sdq xmm0, rax ; convert long sum to double
+js .L24 ; jump if negative (rare case for signed)
+pxor xmm1, xmm1 ; zero xmm1
+cvtsi2sdq xmm1, rsi ; convert size_t n to double
+divsd xmm0, xmm1 ; compute average
+.L24:
+mov rax, rsi ; branch for extreme cases
+shr rax ; divide by 2
+and esi, 1 ; extract lowest bit
+or rax, rsi ; adjust for rounding odd numbers
+cvtsi2sdq xmm1, rax ; convert to double
+addsd xmm1, xmm1 ; multiply by 2
+jmp .L25 ; jump back to division
 ```
 
 - The `js .L24` branch handles extreme cases.
