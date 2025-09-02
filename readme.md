@@ -24,6 +24,9 @@ js .L24 ; jump if negative (rare case for signed)
 pxor xmm1, xmm1 ; zero xmm1
 cvtsi2sdq xmm1, rsi ; convert size_t n to double
 divsd xmm0, xmm1 ; compute average
+.
+.
+.
 .L24:
 mov rax, rsi ; branch for extreme cases
 shr rax ; divide by 2
